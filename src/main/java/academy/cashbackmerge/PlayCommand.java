@@ -42,7 +42,7 @@ public final class PlayCommand implements Callable<Integer> {
                 break;
             }
             // PowerShell 5.1 и Блокнот ставят невидимый символ BOM в начало ввода.
-            String text = input.nextLine().replace("﻿", "").trim();
+            String text = input.nextLine().replace("\uFEFF", "").trim();
             if ("q".equals(text)) {
                 break;
             }

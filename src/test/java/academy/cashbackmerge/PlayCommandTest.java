@@ -34,7 +34,7 @@ class PlayCommandTest {
     @Test
     @DisplayName("Символ BOM в начале ввода не мешает первому ходу")
     void byteOrderMarkIsIgnored() {
-        CliRunner.Result result = CliRunner.runWithInput("﻿w\nq\n", "play", "--seed", "42");
+        CliRunner.Result result = CliRunner.runWithInput("\uFEFFw\nq\n", "play", "--seed", "42");
 
         assertThat(result.stdout()).contains("Счёт: 4").doesNotContain("Не понял ход");
     }

@@ -2,7 +2,6 @@ package academy.cashbackmerge.mandatory.mr2;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.fail;
 
 import academy.cashbackmerge.game.Board;
 import academy.cashbackmerge.game.Cashback;
@@ -125,6 +124,6 @@ class MoveEngineTest {
                 return result;
             }
         }
-        return fail("Ни один ход не меняет поле");
+        throw new AssertionError("Ни один ход не меняет поле");
     }
 }
