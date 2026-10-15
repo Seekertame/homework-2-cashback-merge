@@ -2,7 +2,7 @@ package academy.cashbackmerge.game;
 
 import java.math.BigDecimal;
 
-/** Правило появления плитки: с какой вероятностью новая плитка будет этого уровня. */
+/** С какой вероятностью новая плитка будет этого уровня. */
 public record SpawnRule(Cashback cashback, BigDecimal probability) {
 
     public SpawnRule {

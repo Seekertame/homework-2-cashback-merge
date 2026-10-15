@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/** Поле игры. Пустой клетки нет в tiles. Поле не меняется: каждое изменение создаёт новое поле. */
+/** Поле игры. Пустой клетки нет в tiles. Поле не меняется, каждое изменение создаёт новое поле. */
 public record Board(Map<Position, Cashback> tiles) {
 
     public Board {

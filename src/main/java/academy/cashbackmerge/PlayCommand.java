@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-/** Команда play: партия в консоли. Игрок вводит направления, программа показывает поле после каждого хода. */
+/** Партия в консоли. Игрок вводит направления, программа показывает поле после каждого хода. */
 @Command(name = "play", description = "Сыграть партию в консоли.")
 public final class PlayCommand implements Callable<Integer> {
 

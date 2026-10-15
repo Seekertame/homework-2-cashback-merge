@@ -57,13 +57,13 @@ class MergeRulesTest {
         "'1,2,1,2', '1,2,1,2'",
         "'32,32,.,.', '32,32,.,.'",
     })
-    @DisplayName("Сдвиг влево, другие случаи: {0} -> {1}")
+    @DisplayName("Другие сдвиги влево {0} -> {1}")
     void otherLeftShifts(String before, String expected) {
         assertThat(slideRow(before, Direction.LEFT)).isEqualTo(expected);
     }
 
     @Test
-    @DisplayName("Сдвиг вправо сливает пару у правого края: [1,1,1,.] -> [.,.,1,2]")
+    @DisplayName("Сдвиг вправо [1,1,1,.] -> [.,.,1,2] сливает пару у правого края")
     void rightShiftMergesFromRightEdge() {
         assertThat(slideRow("1,1,1,.", Direction.RIGHT)).isEqualTo(".,.,1,2");
     }

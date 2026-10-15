@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-/** Команда init: создаёт начальное состояние по конфигу и seed и печатает его. */
+/** Создаёт начальное состояние по конфигу и seed и печатает его. */
 @Command(name = "init", description = "Создать начальное поле по конфигу и seed и вывести его.")
 public final class InitCommand implements Callable<Integer> {
 

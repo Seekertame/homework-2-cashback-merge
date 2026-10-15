@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.IOException;
 import java.nio.file.Path;
 
-/** Читает конфиг кампании из JSON-файла. */
 public final class ConfigLoader {
 
-    // В файле есть поля, которые пока не нужны: _note и настройки наград для MR3.
+    // Поле _note и настройки наград для MR3 пока не нужны. Jackson их пропускает.
     private static final JsonMapper MAPPER = JsonMapper.builder()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .build();

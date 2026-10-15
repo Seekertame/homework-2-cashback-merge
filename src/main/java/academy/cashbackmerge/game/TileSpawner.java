@@ -52,7 +52,7 @@ public final class TileSpawner {
         throw new IllegalStateException("Случайное число вышло за сумму весов");
     }
 
-    /** Вероятность как целое число: 0.85 при scale 2 превращается в 85. */
+    /** Вероятность как целое число. При scale 2 число 0.85 превращается в 85. */
     private long weight(SpawnRule rule) {
         return rule.probability().movePointRight(scale).longValueExact();
     }

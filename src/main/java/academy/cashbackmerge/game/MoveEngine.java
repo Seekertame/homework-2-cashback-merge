@@ -1,6 +1,6 @@
 package academy.cashbackmerge.game;
 
-/** Ход целиком: сдвиг со слиянием, счёт, лимит ходов и новая плитка. */
+/** Ход целиком. Сдвиг со слиянием, счёт, лимит ходов и новая плитка. */
 public final class MoveEngine {
 
     private final TileSpawner spawner;

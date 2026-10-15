@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/** Настройки кампании. Невалидный конфиг создать нельзя: конструктор бросит исключение. */
+/** Настройки кампании. Невалидный конфиг создать нельзя, конструктор бросит исключение. */
 public record CampaignConfig(int boardSize, int movesLimit, List<SpawnRule> spawnRules) {
 
     public CampaignConfig {
