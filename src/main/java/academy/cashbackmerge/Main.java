@@ -1,5 +1,6 @@
 package academy.cashbackmerge;
 
+import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -10,8 +11,11 @@ import picocli.CommandLine.Command;
         name = "cashback-merge",
         mixinStandardHelpOptions = true,
         description = "Мини-игра Cashback Merge.",
-        subcommands = InitCommand.class)
+        subcommands = {InitCommand.class, PlayCommand.class})
 public final class Main implements Runnable {
+
+    /** Конфиг, который берут команды, если путь не указан. */
+    public static final Path DEFAULT_CONFIG = Path.of("config", "campaign.example.json");
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 

@@ -15,7 +15,7 @@ import picocli.CommandLine.Option;
 public final class InitCommand implements Callable<Integer> {
 
     @Option(names = "--config", description = "Путь к конфигу кампании. По умолчанию ${DEFAULT-VALUE}.")
-    private Path configPath = Path.of("config", "campaign.example.json");
+    private Path configPath = Main.DEFAULT_CONFIG;
 
     @Option(names = "--seed", required = true, description = "Seed. Одинаковый seed даёт одинаковое поле.")
     private long seed;
