@@ -21,8 +21,9 @@ desktop.ini
 
 *.log
 *.hprof
-
-# Отчёт, который пишет команда simulate из README.
-/report.md
 hs_err_pid*
 replay_pid*
+
+# Файлы, которые пишут команды из README.
+/report.md
+/game.txt

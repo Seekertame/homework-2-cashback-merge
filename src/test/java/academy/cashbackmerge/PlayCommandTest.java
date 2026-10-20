@@ -3,11 +3,31 @@ package academy.cashbackmerge;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import academy.cashbackmerge.support.CliRunner;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 @DisplayName("Команда play")
 class PlayCommandTest {
+
+    @Test
+    @DisplayName("Повтор сохранённой партии проходит через те же поля и даёт тот же итог")
+    void replayRepeatsSavedGame(@TempDir Path dir) throws IOException {
+        Path game = dir.resolve("game.txt");
+
+        CliRunner.Result played =
+                CliRunner.runWithInput("w\na\ns\nd\nw\nq\n", "play", "--seed", "42", "--save", game.toString());
+        CliRunner.Result replayed = CliRunner.run("play", "--replay", game.toString());
+
+        assertThat(Files.readString(game, StandardCharsets.UTF_8)).isEqualTo("42\nwasdw\n");
+        assertThat(replayed.exitCode()).as(replayed.toString()).isZero();
+        assertThat(states(replayed.stdout())).isEqualTo(states(played.stdout()));
+    }
 
     @Test
     @DisplayName("Ход вверх сливает две плитки 2% у верхнего края")
@@ -64,5 +84,16 @@ class PlayCommandTest {
 
         assertThat(result.exitCode()).as(result.toString()).isZero();
         assertThat(result.stdout()).contains("Итоговый счёт: 0");
+    }
+
+    /** Строки поля, счёт, ходы и награды. Подсказки и эхо ввода сюда не входят. */
+    private static List<String> states(String stdout) {
+        return stdout.lines()
+                .filter(line -> line.startsWith(" ")
+                        || line.startsWith("Счёт")
+                        || line.startsWith("Осталось")
+                        || line.startsWith("Награда")
+                        || line.startsWith("Итог"))
+                .toList();
     }
 }
