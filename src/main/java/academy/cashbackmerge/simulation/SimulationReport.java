@@ -14,7 +14,7 @@ public final class SimulationReport {
 
     public static String toMarkdown(Path configPath, CampaignConfig config, long seed, SimulationResult result) {
         return "# Отчёт симуляции Cashback Merge\n\n"
-                + "Результат одного запуска с этими параметрами. Это оценка, а не гарантия.\n\n"
+                + "Оценочный результат одного запуска с этими параметрами.\n\n"
                 + parameters(configPath, config, seed, result)
                 + distribution(config, result)
                 + summary(config, result);
