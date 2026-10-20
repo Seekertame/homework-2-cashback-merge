@@ -12,15 +12,17 @@ public final class SimulationReport {
 
     private SimulationReport() {}
 
-    public static String toMarkdown(Path configPath, CampaignConfig config, long seed, SimulationResult result) {
+    public static String toMarkdown(
+            Path configPath, CampaignConfig config, long seed, Strategy strategy, SimulationResult result) {
         return "# Отчёт симуляции Cashback Merge\n\n"
                 + "Оценочный результат одного запуска с этими параметрами.\n\n"
-                + parameters(configPath, config, seed, result)
+                + parameters(configPath, config, seed, strategy, result)
                 + distribution(config, result)
                 + summary(config, result);
     }
 
-    private static String parameters(Path configPath, CampaignConfig config, long seed, SimulationResult result) {
+    private static String parameters(
+            Path configPath, CampaignConfig config, long seed, Strategy strategy, SimulationResult result) {
         List<String> spawnRules = new ArrayList<>();
         for (SpawnRule rule : config.spawnRules()) {
             spawnRules.add(rule.cashback().percent() + "% с вероятностью "
@@ -31,7 +33,7 @@ public final class SimulationReport {
                 + "|---|---|\n"
                 + row("Конфиг", configPath)
                 + row("Игроков", result.players())
-                + row("Стратегия", RandomStrategy.NAME)
+                + row("Стратегия", strategy.name())
                 + row("Seed", seed)
                 + row("Лимит ходов", config.movesLimit())
                 + row("Правила появления", String.join(", ", spawnRules))

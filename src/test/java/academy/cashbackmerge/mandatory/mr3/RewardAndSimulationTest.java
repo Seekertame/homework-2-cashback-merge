@@ -9,9 +9,11 @@ import academy.cashbackmerge.game.Board;
 import academy.cashbackmerge.game.Cashback;
 import academy.cashbackmerge.game.Position;
 import academy.cashbackmerge.game.TileSpawner;
+import academy.cashbackmerge.simulation.RandomStrategy;
 import academy.cashbackmerge.simulation.Simulation;
 import academy.cashbackmerge.simulation.SimulationReport;
 import academy.cashbackmerge.simulation.SimulationResult;
+import academy.cashbackmerge.simulation.Strategy;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.List;
@@ -26,6 +28,7 @@ class RewardAndSimulationTest {
 
     private static final Path CONFIG_PATH = Path.of("config", "campaign.example.json");
     private static final CampaignConfig CONFIG = ConfigLoader.load(CONFIG_PATH);
+    private static final Strategy RANDOM = new RandomStrategy();
 
     @Test
     @DisplayName("Максимальная плитка 16% даёт награду соответствующего tier")
@@ -100,7 +103,7 @@ class RewardAndSimulationTest {
     @Test
     @DisplayName("Каждый игрок попадает ровно в одну строку распределения")
     void everyPlayerIsCountedOnce() {
-        SimulationResult result = Simulation.run(CONFIG, 300, 42);
+        SimulationResult result = Simulation.run(CONFIG, 300, 42, RANDOM);
 
         int counted = 0;
         for (Cashback level : Cashback.values()) {
@@ -112,8 +115,8 @@ class RewardAndSimulationTest {
     }
 
     private static String report(long seed) {
-        SimulationResult result = Simulation.run(CONFIG, 200, seed);
-        return SimulationReport.toMarkdown(CONFIG_PATH, CONFIG, seed, result);
+        SimulationResult result = Simulation.run(CONFIG, 200, seed, RANDOM);
+        return SimulationReport.toMarkdown(CONFIG_PATH, CONFIG, seed, RANDOM, result);
     }
 
     private static SimulationResult result(int players, int maxRewardPlayers) {

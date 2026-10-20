@@ -2,14 +2,17 @@ package academy.cashbackmerge;
 
 import academy.cashbackmerge.config.CampaignConfig;
 import academy.cashbackmerge.config.ConfigLoader;
+import academy.cashbackmerge.simulation.GreedyStrategy;
 import academy.cashbackmerge.simulation.RandomStrategy;
 import academy.cashbackmerge.simulation.Simulation;
 import academy.cashbackmerge.simulation.SimulationReport;
 import academy.cashbackmerge.simulation.SimulationResult;
+import academy.cashbackmerge.simulation.Strategy;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import org.jspecify.annotations.Nullable;
@@ -26,8 +29,8 @@ public final class SimulateCommand implements Callable<Integer> {
     @Option(names = "--players", description = "Число игроков. По умолчанию ${DEFAULT-VALUE}.")
     private int players = Main.DEFAULT_PLAYERS;
 
-    @Option(names = "--strategy", description = "Стратегия игрока. Есть только random.")
-    private String strategy = RandomStrategy.NAME;
+    @Option(names = "--strategy", description = "Стратегия игрока, random или greedy. По умолчанию ${DEFAULT-VALUE}.")
+    private String strategyName = "random";
 
     @Option(names = "--seed", description = "Seed. Если не указан, выбирается случайно и пишется в отчёт.")
     private long seed = new Random().nextInt(Integer.MAX_VALUE);
@@ -37,12 +40,10 @@ public final class SimulateCommand implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        if (!RandomStrategy.NAME.equals(strategy)) {
-            throw new IllegalArgumentException("Неизвестная стратегия " + strategy + ". Есть только random.");
-        }
+        Strategy strategy = strategyByName(strategyName);
         CampaignConfig config = ConfigLoader.load(configPath);
-        SimulationResult result = Simulation.run(config, players, seed);
-        String report = SimulationReport.toMarkdown(configPath, config, seed, result);
+        SimulationResult result = Simulation.run(config, players, seed, strategy);
+        String report = SimulationReport.toMarkdown(configPath, config, seed, strategy, result);
         if (output == null) {
             System.out.print(report);
             return 0;
@@ -55,5 +56,14 @@ public final class SimulateCommand implements Callable<Integer> {
         System.out.println(
                 "Отчёт записан в " + output + ". Статус " + result.status(config.maxRewardAllowedRate()) + ".");
         return 0;
+    }
+
+    private static Strategy strategyByName(String name) {
+        for (Strategy strategy : List.of(new RandomStrategy(), new GreedyStrategy())) {
+            if (strategy.name().equals(name)) {
+                return strategy;
+            }
+        }
+        throw new IllegalArgumentException("Неизвестная стратегия " + name + ". Есть random и greedy.");
     }
 }

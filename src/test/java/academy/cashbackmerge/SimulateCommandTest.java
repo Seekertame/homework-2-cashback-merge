@@ -39,12 +39,21 @@ class SimulateCommandTest {
     }
 
     @Test
+    @DisplayName("Стратегия greedy выбирается опцией и пишется в отчёт")
+    void greedyStrategyIsUsed() {
+        CliRunner.Result result = CliRunner.run("simulate", "--players", "50", "--strategy", "greedy", "--seed", "1");
+
+        assertThat(result.exitCode()).as(result.toString()).isZero();
+        assertThat(result.stdout()).contains("| Стратегия | greedy |");
+    }
+
+    @Test
     @DisplayName("Неизвестная стратегия отклоняется понятным текстом")
     void unknownStrategyIsRejected() {
-        CliRunner.Result result = CliRunner.run("simulate", "--players", "10", "--strategy", "greedy");
+        CliRunner.Result result = CliRunner.run("simulate", "--players", "10", "--strategy", "smart");
 
         assertThat(result.exitCode()).isEqualTo(1);
-        assertThat(result.stderr()).contains("Неизвестная стратегия greedy");
+        assertThat(result.stderr()).contains("Неизвестная стратегия smart");
     }
 
     @Test

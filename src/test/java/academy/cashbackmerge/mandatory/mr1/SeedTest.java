@@ -6,9 +6,11 @@ import academy.cashbackmerge.config.CampaignConfig;
 import academy.cashbackmerge.config.ConfigLoader;
 import academy.cashbackmerge.game.GameState;
 import academy.cashbackmerge.game.TileSpawner;
+import academy.cashbackmerge.simulation.RandomStrategy;
 import academy.cashbackmerge.simulation.Simulation;
 import academy.cashbackmerge.simulation.SimulationReport;
 import academy.cashbackmerge.simulation.SimulationResult;
+import academy.cashbackmerge.simulation.Strategy;
 import java.nio.file.Path;
 import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +22,7 @@ class SeedTest {
 
     private static final Path CONFIG_PATH = Path.of("config", "campaign.example.json");
     private static final CampaignConfig CONFIG = ConfigLoader.load(CONFIG_PATH);
+    private static final Strategy RANDOM = new RandomStrategy();
 
     @Test
     @DisplayName("Одинаковый конфиг и seed дают одинаковое начальное поле")
@@ -48,8 +51,8 @@ class SeedTest {
     }
 
     private static String report(long seed) {
-        SimulationResult result = Simulation.run(CONFIG, 200, seed);
-        return SimulationReport.toMarkdown(CONFIG_PATH, CONFIG, seed, result);
+        SimulationResult result = Simulation.run(CONFIG, 200, seed, RANDOM);
+        return SimulationReport.toMarkdown(CONFIG_PATH, CONFIG, seed, RANDOM, result);
     }
 
     private static GameState start(long seed) {

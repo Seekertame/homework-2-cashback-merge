@@ -1,20 +1,19 @@
 package academy.cashbackmerge.simulation;
 
 import academy.cashbackmerge.game.Direction;
+import academy.cashbackmerge.game.GameState;
 import java.util.Random;
 
-/** Стратегия random. Игрок выбирает направление наугад из четырёх. */
-public final class RandomStrategy {
+/** Выбирает направление наугад из четырёх. */
+public final class RandomStrategy implements Strategy {
 
-    public static final String NAME = "random";
-
-    private final Random random;
-
-    public RandomStrategy(Random random) {
-        this.random = random;
+    @Override
+    public String name() {
+        return "random";
     }
 
-    public Direction chooseMove() {
+    @Override
+    public Direction chooseMove(GameState state, Random random) {
         Direction[] directions = Direction.values();
         return directions[random.nextInt(directions.length)];
     }
