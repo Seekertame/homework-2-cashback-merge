@@ -11,11 +11,14 @@ import picocli.CommandLine.Command;
         name = "cashback-merge",
         mixinStandardHelpOptions = true,
         description = "Мини-игра Cashback Merge.",
-        subcommands = {InitCommand.class, PlayCommand.class})
+        subcommands = {InitCommand.class, PlayCommand.class, SimulateCommand.class})
 public final class Main implements Runnable {
 
     /** Конфиг, который берут команды, если путь не указан. */
     public static final Path DEFAULT_CONFIG = Path.of("config", "campaign.example.json");
+
+    /** Число игроков в симуляции, если оно не указано. */
+    public static final int DEFAULT_PLAYERS = 10_000;
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 

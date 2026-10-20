@@ -1,15 +1,16 @@
 package academy.cashbackmerge.mandatory.mr1;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import academy.cashbackmerge.config.CampaignConfig;
 import academy.cashbackmerge.config.ConfigLoader;
 import academy.cashbackmerge.game.GameState;
 import academy.cashbackmerge.game.TileSpawner;
+import academy.cashbackmerge.simulation.Simulation;
+import academy.cashbackmerge.simulation.SimulationReport;
+import academy.cashbackmerge.simulation.SimulationResult;
 import java.nio.file.Path;
 import java.util.Random;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,8 @@ import org.junit.jupiter.api.Test;
 @DisplayName("MR1. Воспроизводимость по seed")
 class SeedTest {
 
-    private static final CampaignConfig CONFIG = ConfigLoader.load(Path.of("config", "campaign.example.json"));
+    private static final Path CONFIG_PATH = Path.of("config", "campaign.example.json");
+    private static final CampaignConfig CONFIG = ConfigLoader.load(CONFIG_PATH);
 
     @Test
     @DisplayName("Одинаковый конфиг и seed дают одинаковое начальное поле")
@@ -36,10 +38,18 @@ class SeedTest {
     }
 
     @Test
-    @Disabled("MR3: реализуй тест и удали эту строку")
     @DisplayName("Одинаковый конфиг, seed и стратегия дают одинаковый отчёт симуляции")
     void sameInputsProduceSameSimulationReport() {
-        fail("Тест не реализован");
+        String first = report(42);
+        String second = report(42);
+
+        assertThat(first).isEqualTo(second);
+        assertThat(first).isNotEqualTo(report(43));
+    }
+
+    private static String report(long seed) {
+        SimulationResult result = Simulation.run(CONFIG, 200, seed);
+        return SimulationReport.toMarkdown(CONFIG_PATH, CONFIG, seed, result);
     }
 
     private static GameState start(long seed) {
