@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 public final class ConfigLoader {
 
-    // Поле _note и настройки наград для MR3 пока не нужны. Jackson их пропускает.
+    // Поле _note это комментарий для человека. Jackson его пропускает.
     private static final JsonMapper MAPPER = JsonMapper.builder()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .build();

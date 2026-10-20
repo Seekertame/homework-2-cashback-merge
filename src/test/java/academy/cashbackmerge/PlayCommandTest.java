@@ -21,6 +21,15 @@ class PlayCommandTest {
     }
 
     @Test
+    @DisplayName("Награда показывается по максимальной плитке")
+    void currentRewardIsShown() {
+        // До хода максимальная плитка 2%, награда 0. После хода вверх плитка 4%, награда 50.
+        CliRunner.Result result = CliRunner.runWithInput("w\nq\n", "play", "--seed", "42");
+
+        assertThat(result.stdout()).contains("Награда сейчас: 0", "Награда сейчас: 50", "Итоговая награда: 50");
+    }
+
+    @Test
     @DisplayName("Ход без изменений не тратит ход")
     void moveWithoutChangeIsNotCounted() {
         // При seed 42 обе плитки уже у правого края, ход вправо ничего не меняет.

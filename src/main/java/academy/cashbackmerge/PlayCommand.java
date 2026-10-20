@@ -35,7 +35,7 @@ public final class PlayCommand implements Callable<Integer> {
         Scanner input = new Scanner(System.in, StandardCharsets.UTF_8);
 
         System.out.println("Seed: " + seed);
-        System.out.print(BoardRenderer.render(state));
+        show(state, config);
         while (!state.isOver()) {
             System.out.println("Ход: w вверх, s вниз, a влево, d вправо, q выход.");
             if (!input.hasNextLine()) {
@@ -56,11 +56,21 @@ public final class PlayCommand implements Callable<Integer> {
                 System.out.println("Плитки не сдвинулись. Ход не потрачен.");
             }
             state = result.state();
-            System.out.print(BoardRenderer.render(state));
+            show(state, config);
         }
         System.out.println(state.isOver() ? "Партия окончена." : "Партия прервана.");
         System.out.println("Итоговый счёт: " + state.score());
+        System.out.println("Итоговая награда: " + reward(state, config));
         return 0;
+    }
+
+    private static void show(GameState state, CampaignConfig config) {
+        System.out.print(BoardRenderer.render(state));
+        System.out.println("Награда сейчас: " + reward(state, config));
+    }
+
+    private static String reward(GameState state, CampaignConfig config) {
+        return config.rewardFor(state.board().maxTile()).toPlainString();
     }
 
     private static Optional<Direction> parseDirection(String text) {

@@ -38,6 +38,20 @@ public record Board(Map<Position, Cashback> tiles) {
         return result;
     }
 
+    /** Самая большая плитка на поле. По ней начисляется награда. */
+    public Cashback maxTile() {
+        if (tiles.isEmpty()) {
+            throw new IllegalStateException("На поле нет плиток");
+        }
+        Cashback max = Cashback.ONE;
+        for (Cashback tile : tiles.values()) {
+            if (tile.percent() > max.percent()) {
+                max = tile;
+            }
+        }
+        return max;
+    }
+
     /** Новое поле, на котором в пустую клетку поставлена плитка. */
     public Board withTile(Position position, Cashback cashback) {
         if (tiles.containsKey(position)) {
